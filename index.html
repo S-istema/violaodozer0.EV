@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Violão com Emanuel Víctor</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0e1013">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#0e1013;--card:#2a2019;--ac:#f2a541;--tx:#f5ebe0;--mu:#b9a894;--ok:#6fcf97;--er:#eb5757}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px system-ui,sans-serif;padding:env(safe-area-inset-top) 0 80px}
+header{padding:16px;text-align:center}h1{margin:0;font-size:22px;color:var(--ac)}header small{color:var(--mu)}
+main{max-width:760px;margin:auto;padding:0 12px}section{display:none}section.on{display:block}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:10px 0}h2{margin:0 0 8px;font-size:18px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#120d0a;padding-bottom:env(safe-area-inset-bottom);overflow-x:auto}
+nav button{flex:1;min-width:64px;background:none;border:0;color:var(--mu);padding:10px 4px;font-size:11px}nav button b{display:block;font-size:20px}nav button.on{color:var(--ac)}
+button.b{background:var(--ac);color:#0e1013;border:0;border-radius:10px;padding:10px 14px;font-weight:700;margin:3px}button.g{background:#3a2d23;color:var(--tx)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}.ch{background:var(--card);border-radius:12px;text-align:center;padding:6px;cursor:pointer}.ch svg{width:100%}
+table{border-collapse:collapse;width:100%;text-align:center}td,th{padding:6px;border-bottom:1px solid #3a2d23}.sc{overflow-x:auto}
+.fb td{min-width:34px;font-size:12px;cursor:pointer}.fb td.o{color:var(--ac);font-weight:700}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;background:#3a2d23;color:var(--tx);border:0;border-radius:10px;padding:12px;font-size:16px}.opt.ok{background:var(--ok);color:#000}.opt.no{background:var(--er)}
+input,select{background:#3a2d23;color:var(--tx);border:0;border-radius:8px;padding:8px;font-size:16px}input[type=range]{width:100%}
+details{background:var(--card);border-radius:12px;padding:12px;margin:8px 0}summary{font-weight:700;cursor:pointer}
+.bars{display:flex;gap:6px;align-items:flex-end;height:80px}.bars div{flex:1;background:var(--ac);border-radius:4px 4px 0 0;text-align:center;font-size:10px;color:#000;min-height:3px}
+.big{font-size:40px;font-weight:800;color:var(--ac)}.chip{display:inline-block;background:#3a2d23;border-radius:20px;padding:6px 12px;margin:3px}.mu{color:var(--mu)}
+</style><link rel="stylesheet" href="pro.css"></head><body>
+<header></header>
+<main>
+<section id="home" class="on">
+<div class="card"><h2>Sequência de prática</h2><span class="big" id="streak">0</span> <span class="mu">dias seguidos</span><p id="today" class="mu"></p><div class="bars" id="bars"></div></div>
+<div class="card"><h2>⏱️ Praticar agora</h2><div class="big" id="clock">00:00</div><button class="b" id="tgo">Iniciar</button><button class="b g" id="tsave">Salvar prática</button></div>
+<div class="card"><h2>✅ Rotina de hoje</h2><div id="chk"></div></div>
+<div class="card"><h2>🔔 Lembrete diário</h2><p class="mu">Horário: <input type="time" id="rt" value="19:00"></p><button class="b" id="ron">Ativar lembrete</button><button class="b g" id="rtest">Testar</button><p class="mu" id="rmsg"></p><p class="mu" style="font-size:13px">Dica: instale o app na tela inicial (menu do navegador → “Instalar app”). O aviso chega melhor no Android/Chrome; no iPhone, instale pelo Safari (Compartilhar → Adicionar à Tela de Início).</p></div>
+</section>
+<section id="chords"><div class="card"><h2>Dicionário de acordes</h2><p class="mu">Toque no acorde para ouvir. ✕ = não toca a corda, ○ = corda solta. Cordas da esquerda (6ª, grave) para a direita (1ª, aguda).</p><div class="grid" id="cg"></div></div></section>
+<section id="notes">
+<div class="card"><h2>Notas e cifras</h2><p class="mu">A cifra é uma letra que representa a nota. Sustenido (#) sobe meio tom.</p><div class="sc"><table id="nt"></table></div></div>
+<div class="card"><h2>Braço do violão</h2><button class="b g" id="fm">Mostrar: Nome</button><p class="mu">Linhas: 1ª corda (aguda) em cima → 6ª embaixo. Toque numa casa para ouvir.</p><div class="sc"><table class="fb" id="fb"></table></div></div>
+<div class="card"><h2>Campo harmônico</h2><select id="ky"></select><p id="cf"></p><p class="mu">Os acordes de uma música costumam sair desse grupo: I, ii, iii, IV, V, vi, vii°.</p></div>
+</section>
+<section id="act">
+<div class="card"><h2>🧠 Quiz: nota → cifra</h2><div id="q1"></div></div>
+<div class="card"><h2>👀 Quiz: qual é este acorde?</h2><div id="q2"></div></div>
+<div class="card"><h2>🥁 Metrônomo</h2><div class="big" id="bpmv">80</div><input type="range" id="bpm" min="40" max="180" value="80"><button class="b" id="mgo">Iniciar</button></div>
+<div class="card"><h2>🎯 Afinação (cordas soltas)</h2><div id="tun"></div></div>
+</section>
+<section id="learn"><div id="ls"></div></section>
+</main>
+<nav><button data-t="home" class="on"><b>🏠</b>Início</button><button data-t="chords"><b>🎼</b>Acordes</button><button data-t="notes"><b>🔤</b>Notas</button><button data-t="act"><b>🎮</b>Atividades</button><button data-t="learn"><b>📚</b>Aulas</button></nav>
+<script>
+const $=s=>document.querySelector(s),N=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'],PT=['Dó','Dó#','Ré','Ré#','Mi','Fá','Fá#','Sol','Sol#','Lá','Lá#','Si'];
+const CH={C:'x32010',D:'xx0232',E:'022100',F:'133211',G:'320003',A:'x02220',B:'x24442',Am:'x02210',Dm:'xx0231',Em:'022000',Bm:'x24432',Fm:'133111',Gm:'355333','C7':'x32310','D7':'xx0212','E7':'020100','A7':'x02020','B7':'x21202','G7':'320001',Cmaj7:'x32000',Fmaj7:'xx3210',Am7:'x02010',Dm7:'xx0211',Em7:'020000'};
+const BAR=['F','Fm','B','Bm','Gm'],OPEN=[40,45,50,55,59,64],tg=['Mi (6ª)','Lá (5ª)','Ré (4ª)','Sol (3ª)','Si (2ª)','Mi (1ª)'];
+const td=()=>new Date().toISOString().slice(0,10);
+let S=JSON.parse(localStorage.getItem('ev')||'{}');S.log=S.log||{};S.cfg=S.cfg||{time:'19:00',on:false};S.chk=S.chk||{};
+const sv=()=>{localStorage.setItem('ev',JSON.stringify(S));window.pub&&pub()};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button,section').forEach(e=>e.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on');scrollTo(0,0)});
+function dia(n){const s=CH[n].split('').map(c=>c=='x'?-1:+c),f=s.filter(x=>x>0),mx=Math.max(...f),mn=Math.min(...f),base=mx>5?mn:1;let o=`<svg viewBox="0 0 100 124"><text x="50" y="12" fill="#f2a541" font-size="13" font-weight="700" text-anchor="middle">${n}</text>`;
+for(let j=0;j<=5;j++)o+=`<line x1="15" x2="85" y1="${30+j*18}" y2="${30+j*18}" stroke="#b9a894" stroke-width="${j==0&&base==1?4:1}"/>`;
+for(let i=0;i<6;i++){const x=15+i*14;o+=`<line x1="${x}" x2="${x}" y1="30" y2="120" stroke="#b9a894"/>`;if(s[i]<0)o+=`<text x="${x}" y="26" fill="#eb5757" font-size="11" text-anchor="middle">✕</text>`;else if(s[i]==0)o+=`<circle cx="${x}" cy="22" r="4" fill="none" stroke="#6fcf97"/>`;else o+=`<circle cx="${x}" cy="${30+(s[i]-base+.5)*18}" r="6" fill="#f2a541"/>`}
+if(BAR.includes(n)){const a=s.findIndex(x=>x==mn),z=s.lastIndexOf(mn);o+=`<rect x="${15+a*14-6}" y="${30+(mn-base+.5)*18-5}" width="${(z-a)*14+12}" height="10" rx="5" fill="#f2a541" opacity=".85"/>`}
+if(base>1)o+=`<text x="2" y="${30+9+4}" fill="#b9a894" font-size="9">${base}ª</text>`;return o+'</svg>'}
+let AC;function tone(fr,d=1.4,t=0){AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime+t;o.type='triangle';o.frequency.value=fr;g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.3,n+.01);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g).connect(AC.destination);o.start(n);o.stop(n+d)}
+const fq=m=>440*2**((m-69)/12);
+function strum(n){window.onAct&&onAct('acorde');CH[n].split('').forEach((c,i)=>{if(c!='x')tone(fq(OPEN[i]+ +c),1.6,i*.07)})}
+$('#cg').innerHTML=Object.keys(CH).map(n=>`<div class="ch" data-c="${n}">${dia(n)}</div>`).join('');$('#cg').onclick=e=>{const c=e.target.closest('.ch');if(c)strum(c.dataset.c)};
+$('#nt').innerHTML='<tr><th>Nota</th><th>Cifra</th></tr>'+PT.map((p,i)=>`<tr><td>${p}</td><td><b>${N[i]}</b></td></tr>`).join('');
+let fmode=0;function fb(){let h='<tr><td></td>'+[...Array(13).keys()].map(i=>`<td class="mu">${i}</td>`).join('')+'</tr>';[5,4,3,2,1,0].forEach(si=>{h+=`<tr><td class="mu">${6-si}ª</td>`;for(let f=0;f<=12;f++){const m=OPEN[si]+f;h+=`<td data-m="${m}" class="${f?'':'o'}">${fmode?N[m%12]:PT[m%12]}</td>`}h+='</tr>'});$('#fb').innerHTML=h}
+fb();$('#fm').onclick=()=>{fmode^=1;$('#fm').textContent='Mostrar: '+(fmode?'Cifra':'Nome');fb()};$('#fb').onclick=e=>{if(e.target.dataset.m)tone(fq(+e.target.dataset.m),1.2)};
+$('#ky').innerHTML=N.map((n,i)=>`<option value="${i}">${PT[i]} (${n})</option>`).join('');
+function cf(){const k=+$('#ky').value,iv=[0,2,4,5,7,9,11],q=['','m','m','','','m','dim'],r=['I','ii','iii','IV','V','vi','vii°'];$('#cf').innerHTML=iv.map((v,i)=>`<span class="chip">${r[i]}: <b>${N[(k+v)%12]+q[i]}</b></span>`).join('')}
+$('#ky').onchange=cf;cf();
+const rnd=a=>a[Math.floor(Math.random()*a.length)],shuf=a=>[...a].sort(()=>Math.random()-.5);
+function quiz(el,gen){let sc=0,n=0;const run=()=>{const q=gen();el.innerHTML=`<p>${q.p}</p>`+q.o.map(o=>`<button class="opt">${o}</button>`).join('')+`<p class="mu">Acertos: ${sc}/${n}</p>`;el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{n++;const ok=b.textContent==q.a;window.onAct&&onAct('quiz',ok);if(ok)sc++;b.classList.add(ok?'ok':'no');el.querySelectorAll('.opt').forEach(x=>x.disabled=true);setTimeout(run,ok?700:1400)})};run()}
+quiz($('#q1'),()=>{const i=Math.floor(Math.random()*12),a=N[i],o=new Set([a]);while(o.size<4)o.add(rnd(N));return{p:`Qual é a cifra da nota <b>${PT[i]}</b>?`,a,o:shuf([...o])}});
+quiz($('#q2'),()=>{const k=Object.keys(CH),a=rnd(k),o=new Set([a]);while(o.size<4)o.add(rnd(k));return{p:`<div style="width:130px;margin:auto">${dia(a).replace(/<text[^>]*font-size="13".*?<\/text>/,'')}</div>`,a,o:shuf([...o])}});
+let mi=null;$('#bpm').oninput=e=>{$('#bpmv').textContent=e.target.value;if(mi){stopM();startM()}};
+function startM(){const t=()=>tone(1000,.05);t();mi=setInterval(t,60000/$('#bpm').value);$('#mgo').textContent='Parar'}function stopM(){clearInterval(mi);mi=null;$('#mgo').textContent='Iniciar'}
+$('#mgo').onclick=()=>{if(mi)stopM();else{window.onAct&&onAct('metro');startM()}};
+$('#tun').innerHTML=tg.map((t,i)=>`<button class="b g" data-i="${i}">${t}</button>`).join('');$('#tun').onclick=e=>{if(e.target.dataset.i)tone(fq(OPEN[e.target.dataset.i]),2.5)};
+const L=[['1. Partes do violão','Cabeça (tarraxas), braço (trastes e casas), corpo, boca e cavalete. As cordas são numeradas da mais fina (1ª, Mi agudo) à mais grossa (6ª, Mi grave). Ordem das cordas do grave ao agudo: <b>Mi, Lá, Ré, Sol, Si, Mi</b>. Dica para decorar: “Mi Lá Ré Sol Si Mi”.'],['2. Postura e mãos','Sente com as costas retas, violão apoiado na perna. Mão esquerda: polegar atrás do braço, dedos curvos, ponta dos dedos perto do traste (sem encostar nele). Mão direita: pulso solto, movimento vem do antebraço. Dedos da esquerda: 1 indicador, 2 médio, 3 anular, 4 mindinho.'],['3. Afinação','Use a aba Atividades → Afinação para ouvir cada corda solta. Gire a tarraxa até o som igualar. Afine do grave ao agudo. Um afinador de celular também ajuda muito.'],['4. Como ler cifra','Cifra é a letra do acorde acima da letra da música. Letra sozinha = maior (C). Letra com “m” = menor (Am). Número 7 = acorde com sétima (G7). # sobe meio tom, b desce meio tom. Exemplo: C Dó, D Ré, E Mi, F Fá, G Sol, A Lá, B Si.'],['5. Como ler o diagrama de acorde','Linhas verticais = cordas, horizontais = casas. Bolinha = onde apertar. ○ = solta, ✕ = não tocar. Se aparecer uma barra, é pestana: um dedo (geralmente o indicador) aperta várias cordas juntas.'],['6. Primeiros acordes (ordem sugerida)','Semana 1: Em e Am. Semana 2: C e D. Semana 3: G e E. Semana 4: Dm, A, F (com calma). Com C, G, Am e Em já dá para tocar muitas músicas.'],['7. Troca de acordes','Treine trocar devagar com o metrônomo (60 bpm), 1 acorde por compasso. Olhe a forma antes de mover. Só aumente a velocidade quando a troca estiver limpa. Pares clássicos: Am↔C, C↔G, Em↔Am, D↔A.'],['8. Batidas (ritmos)','Seta ↓ = para baixo, ↑ = para cima. Batida 1 (4 tempos): ↓ ↓ ↓ ↓. Batida 2: ↓ ↓↑ ↓ ↓↑. Batida 3 (pop): ↓ ↓↑ ↑↓↑. Mantenha a mão sempre em movimento, mesmo quando não toca as cordas.'],['9. Pestana (F e Bm)','Ache a força no indicador de lado, perto do traste. Comece com Fmaj7 (mais fácil) ou com mini-pestana. É normal doer e soar mal no começo: treine 2–3 minutos por dia.'],['10. Escala maior e campo harmônico','Escala de Dó maior: C D E F G A B. Fórmula: tom, tom, semitom, tom, tom, tom, semitom. Use a aba Notas → Campo harmônico para ver os acordes de cada tom.'],['11. Dedilhado básico','Polegar toca graves (6ª, 5ª, 4ª) e indicador, médio, anelar tocam 3ª, 2ª, 1ª. Padrão simples: P-I-M-A-M-I (grave, 3ª, 2ª, 1ª, 2ª, 3ª).'],['12. Como estudar bem','10 a 20 minutos todos os dias valem mais do que 2 horas uma vez por semana. Rotina: afinar → aquecer → acordes → troca → uma música. Grave um vídeo seu e compare com o do professor Emanuel.']];
+$('#ls').innerHTML=L.map(l=>`<details><summary>${l[0]}</summary><p>${l[1]}</p></details>`).join('');
+const R=['Afinar o violão','Aquecer os dedos (2 min)','Treinar 2 acordes novos','Trocar acordes com metrônomo','Tocar uma música inteira'];
+function chk(){$('#chk').innerHTML=R.map((r,i)=>`<label style="display:block;padding:6px 0"><input type="checkbox" data-i="${i}" ${(S.chk[td()]||[])[i]?'checked':''}> ${r}</label>`).join('')}
+chk();$('#chk').onchange=e=>{const a=S.chk[td()]||[];a[e.target.dataset.i]=e.target.checked;S.chk={[td()]:a};sv()};
+let t0=0,ti=null,sec=0;const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+$('#tgo').onclick=()=>{if(ti){clearInterval(ti);ti=null;$('#tgo').textContent='Continuar'}else{ti=setInterval(()=>{sec++;$('#clock').textContent=fmt(sec)},1000);$('#tgo').textContent='Pausar'}};
+$('#tsave').onclick=()=>{S.log[td()]=(S.log[td()]||0)+Math.max(1,Math.round(sec/60));sec=0;clearInterval(ti);ti=null;$('#clock').textContent='00:00';$('#tgo').textContent='Iniciar';sv();draw()};
+function draw(){let st=0,d=new Date();if(!S.log[td()])d.setDate(d.getDate()-1);while(S.log[d.toISOString().slice(0,10)]){st++;d.setDate(d.getDate()-1)}$('#streak').textContent=st;$('#today').textContent='Hoje: '+(S.log[td()]||0)+' min';let h='';const mx=Math.max(10,...Object.values(S.log));for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i);const v=S.log[x.toISOString().slice(0,10)]||0;h+=`<div style="height:${v/mx*100}%">${v||''}<br>${'DSTQQSS'[x.getDay()]}</div>`}$('#bars').innerHTML=h}draw();
+const MS=['Hora de praticar! 10 minutinhos já fazem diferença 🎸','O professor Emanuel Víctor lembra: pratique hoje, seus dedos agradecem!','Pegue o violão: hoje é dia de treinar a troca de acordes.','Constância vence talento. Vamos tocar um pouquinho?'];
+async function notify(m){const o={body:m||rnd(MS),icon:'icon-192.png',tag:'daily'};try{const r=await navigator.serviceWorker.ready;await r.showNotification('Violão com Emanuel Víctor',o)}catch(e){new Notification('Violão com Emanuel Víctor',o)}}
+function rs(){$('#rt').value=S.cfg.time;$('#ron').textContent=S.cfg.on?'Desativar lembrete':'Ativar lembrete';$('#rmsg').textContent=S.cfg.on?'Lembrete ativo às '+S.cfg.time+'. Abra o app de vez em quando para manter o aviso funcionando.':''}rs();
+$('#rt').onchange=e=>{S.cfg.time=e.target.value;sv();rs()};
+$('#ron').onclick=async()=>{if(S.cfg.on){S.cfg.on=false}else{if(!('Notification'in window)){$('#rmsg').textContent='Este navegador não suporta notificações.';return}const p=await Notification.requestPermission();if(p!='granted'){$('#rmsg').textContent='Permissão negada. Libere as notificações nas configurações do navegador.';return}S.cfg.on=true;try{const r=await navigator.serviceWorker.ready;if(r.periodicSync)await r.periodicSync.register('daily',{minInterval:864e5})}catch(e){}}sv();rs()};
+$('#rtest').onclick=async()=>{if(!('Notification'in window))return;if(Notification.permission!='granted'&&await Notification.requestPermission()!='granted')return;notify()};
+function check(){if(!S.cfg.on||Notification.permission!='granted')return;const n=new Date(),h=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');if(h>=S.cfg.time&&S.cfg.last!=td()&&!S.log[td()]){S.cfg.last=td();sv();notify()}}
+setInterval(check,6e4);document.addEventListener('visibilitychange',check);check();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script><script src="pro.js"></script></body></html>
